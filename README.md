@@ -13,7 +13,7 @@ The input file should contain exactly 5 lines, in the following order:
 
 The arguments should be separated by semicolons (```;```). Spaces (``` ```) will be ignored. For lines 3-5, every argument should be a vertex id and the ```i```'th argument corresponds to the ```i```'th edge in line 2.
 
-See the ```main.hs``` function for naming your input or output files.
+See the ```main``` funtion in ```main.hs``` for naming your input or output files.
 
 ## Output file format
 
