@@ -1,0 +1,5 @@
+v1; v2; v3; v8; v20; v33
+e1; e2; e3; e4; e5; e6; e7
+v1; v2; v2; v3; v8; v8; v8
+v2; v2; v3; v8; v3; v8; v33
+a; b; a ; b ; c; d; z

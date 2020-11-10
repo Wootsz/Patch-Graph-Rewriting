@@ -1,0 +1,13 @@
+digraph G {
+node [shape=circle width=0.5 label=""]
+{
+	w33;w20;w8;w3;w2;w1;
+	w1 -> w2 [label="a"];
+	w2 -> w2 [label="b"];
+	w2 -> w3 [label="a"];
+	w3 -> w8 [label="b"];
+	w8 -> w3 [label="c"];
+	w8 -> w8 [label="d"];
+	w8 -> w33 [label="z"];
+}
+}

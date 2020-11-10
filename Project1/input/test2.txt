@@ -1,0 +1,5 @@
+w33; w20; w8; w3; w2; w1
+f1; f2; f3; f4; f5; f6; f7
+w1; w2; w2; w3; w8; w8; w8
+w2; w2; w3; w8; w3; w8; w33
+a; b; a ; b ; c; d; z
