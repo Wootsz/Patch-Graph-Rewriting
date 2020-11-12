@@ -28,6 +28,6 @@ module Outparser where
 
     -- | Converts an 'Edge' into a string line using a source and target 'Map' from the corresponding 'Graph'
     edgeToStringLine :: Edge -> EdgeData -> String
-    edgeToStringLine e (EdgeData s t l) = "\n\t" ++ (getVertexId $ getEdgeVertex e s) ++ 
-                                            " -> " ++ (getVertexId $ getEdgeVertex e t) ++ 
-                                            " [label=\"" ++ (getEdgeLabel' e l) ++ "\"];"
+    edgeToStringLine e (EdgeData s t l) = "\n\t" ++ getVertexId (getEdgeVertex e s) ++ 
+                                            " -> " ++ getVertexId (getEdgeVertex e t) ++ 
+                                            " [label=\"" ++ getEdgeLabel' e l ++ "\"];"

@@ -15,8 +15,8 @@ main :: IO ()
 main = do
     let v = ["v1", "v2", "v3", "v4", "v5", "v6"]
     let w = ["w1", "w2", "w4", "w3", "w5", "w6"]
-    putStrLn $ show $ length $ Overlap.options v w 
-    putStrLn $ show $ noOfOptions (length v) (length w)
+    print $ length $ Overlap.options v w 
+    print $ noOfOptions (length v) (length w)
     return ()
 
 main2 :: IO ()

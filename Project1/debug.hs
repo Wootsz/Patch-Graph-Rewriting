@@ -13,4 +13,4 @@ printOutEdges (Graph (v:vs) e ed vd@(VertexData _ i)) = printOutEdges (Graph vs 
 printMaybeEdges :: Maybe [Edge] -> String
 printMaybeEdges Nothing = ""
 printMaybeEdges (Just []) = ""
-printMaybeEdges (Just ((e) : es)) = e ++ " " ++ printMaybeEdges (Just es)
+printMaybeEdges (Just (e : es)) = e ++ " " ++ printMaybeEdges (Just es)
