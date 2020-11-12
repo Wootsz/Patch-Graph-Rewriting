@@ -18,11 +18,11 @@ module NaiveIsomorphism where
     areGraphsIsomorphic g1@(Graph vs1 es1 _ _) g2@(Graph vs2 es2 _ _) 
         = length vs1 == length vs2 && 
           length es1 == length es2 && 
-          (checkVertexPairings g1 g2 $ makeAllPossibleVertexPairings vs1 vs2)
+          checkVertexPairings g1 g2 (makeAllPossibleVertexPairings vs1 vs2)
 
     -- | Returns a list of all possible vertex pairings of two given lists
     makeAllPossibleVertexPairings :: [Vertex] -> [Vertex] -> [VertexPairing]
-    makeAllPossibleVertexPairings vs1 vs2 = Prelude.map (\x -> fromList $ zip vs1 x) (permutations vs2)
+    makeAllPossibleVertexPairings vs1 vs2 = Prelude.map (fromList . zip vs1) (permutations vs2)
 
     -- | Check all possible vertex pairings until finding one that works, i.e. is isomorphic
     checkVertexPairings :: Graph -> Graph -> [VertexPairing] -> Bool
@@ -31,7 +31,7 @@ module NaiveIsomorphism where
 
     -- | Check if a specific vertex pairing is isomorphic
     checkVertexPairing :: Graph -> Graph -> VertexPairing -> Bool
-    checkVertexPairing g1 g2 vps = foldrWithKey (\key value r -> (r && checkVertexPair g1 g2 vps key value)) True vps
+    checkVertexPairing g1 g2 vps = foldrWithKey (\key value r -> r && checkVertexPair g1 g2 vps key value) True vps
 
     -- | Check for a specific vertex pair if they are isomorphic according to a given pairing
     checkVertexPair :: Graph -> Graph -> VertexPairing -> Vertex -> Vertex -> Bool
@@ -63,14 +63,13 @@ module NaiveIsomorphism where
               target1 = fromJust $ lookup e1 mv1
               target2 = fromJust $ lookup target1 vertexpairing
               e2 = findEdgeWithLabelAndVertex mv2 ml2 label1 target2 es2 in
-          if e2 == Nothing
-            then False 
-            else checkEdges mv1 ml1 mv2 ml2 vertexpairing v1 v2 es1 (Data.List.delete (fromJust e2) es2)
+          isJust e2 &&   -- Make sure we can find an edge e2 (=> e2 is not Nothing)
+          checkEdges mv1 ml1 mv2 ml2 vertexpairing v1 v2 es1 (Data.List.delete (fromJust e2) es2)
 
     -- | Given an edge-vertex map, an edge-label map, a label and a vertex in graph2, find an edge in the given list that matches this label and vertex (according to the maps)
     findEdgeWithLabelAndVertex :: Map Edge Vertex -> Map Edge Label -> Label -> Vertex -> [Edge] -> Maybe Edge
     findEdgeWithLabelAndVertex _  _  _ _ []     = Nothing
-    findEdgeWithLabelAndVertex vm lm l v (e:es) = if ((fromJust $ lookup e lm) == l) && 
-                                                     ((fromJust $ lookup e vm) == v) 
+    findEdgeWithLabelAndVertex vm lm l v (e:es) = if fromJust (lookup e lm) == l && 
+                                                     fromJust (lookup e vm) == v
                                                     then Just e 
                                                     else findEdgeWithLabelAndVertex vm lm l v es

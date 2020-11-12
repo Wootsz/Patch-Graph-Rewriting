@@ -8,14 +8,14 @@ module Inparser where
     -- | Recursively split a string into substrings and return them in a list. 
     -- Separate strings on the newline character ('\\n')
     splitLines :: String -> String -> [String] -> [String]
-    splitLines []        s ys = ys ++ if s == "" then [] else [s]   -- only add s to our lines list if it is not empty
+    splitLines []        s ys = ys ++ [s | s /= ""]                 -- only add s to our lines list if it is not empty
     splitLines ('\n':xs) s ys = splitLines xs ""    (ys ++ [s])     -- new line, so we add s to our lines list and continue constructing the next line
     splitLines (x:xs)    s ys = splitLines xs (x:s) ys              -- ! we reverse the line here because of (x:s) and not (x ++ [s])
 
     -- | Recursively split a string into substrings and return them in a list. 
     -- Separate strings on the semicolon character (';') and ignore spaces (' ')
     splitArguments :: String -> String -> [String] -> [String]
-    splitArguments []       s ys = ys ++ if s == "" then [] else [s]    -- only add s to our arguments list if it is not empty
+    splitArguments []       s ys = ys ++ [s | s /= ""]                  -- only add s to our arguments list if it is not empty
     splitArguments (' ':xs) s ys = splitArguments xs s     ys           -- ignore spaces
     splitArguments (';':xs) s ys = splitArguments xs ""    (ys ++ [s])  -- new argument, so we add s to our arguments list and continue constructing the next arg   
     splitArguments (x:xs)   s ys = splitArguments xs (x:s) ys           -- ! we reverse the argument here because of (x:s) and not (x ++ [s])   
@@ -51,13 +51,11 @@ module Inparser where
 
     -- | Converts a list of strings (vertex ids) into vertices                        
     parseVertices :: [String] -> [Vertex] -> [Vertex]
-    parseVertices []     vs = vs
-    parseVertices (x:xs) vs = parseVertices xs (vs ++ [x])
+    parseVertices xs vs = foldl (\ vs x -> vs ++ [x]) vs xs
 
     -- | Converts a list of strings (edge ids) into edges
     parseEdges :: [String] -> [Edge] -> [Edge]
-    parseEdges []     es = es
-    parseEdges (x:xs) es = parseEdges xs (es ++ [x])
+    parseEdges xs es = foldl (\ es x -> es ++ [x]) es xs
 
     -- | Given a 'Graph' with a complete vertex, edge, sources, targets and labels list, add the in- and outEdges 'Map's for every vertex
     addEdgesSourceTarget :: Graph -> Graph
@@ -71,4 +69,4 @@ module Inparser where
 
     -- | Append an 'Edge' to a vertex-to-in-or-outedges-map
     addEdgeToVertex :: Vertex -> Edge -> Map Vertex [Edge] -> Map Vertex [Edge]
-    addEdgeToVertex v e m = adjust (e:) v m
+    addEdgeToVertex v e = adjust (e:) v
